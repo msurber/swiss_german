@@ -13,6 +13,13 @@
     "dummy": 0
   },
   "resources": {
-    "media": []
+    "media": [
+    	{
+          "type": "png",
+          "name": "MenuIcon",
+          "file": "images/menu_icon_swiss_german.png",
+          "menuIcon" : true
+        }
+    ]
   }
 }
