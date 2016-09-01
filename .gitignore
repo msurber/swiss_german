@@ -1,2 +1,5 @@
 .DS_Store
 swiss_german/.lock-waf_darwin_build
+
+# Ignore build generated files
+build
