@@ -6,7 +6,7 @@ static TextLayer *hourLayer; // The hours
 
 static void init_text_layers(GRect bounds) {
   int paddingLeft = PBL_IF_ROUND_ELSE(0, 10);
-  int top = (bounds.size.h - 3 * 42)/2 - 10;
+  int top = (bounds.size.h - 3 * 42)/2 - 8;
 
   GRect minuteFrame = (GRect) {
     .origin = {
@@ -44,6 +44,20 @@ static void init_text_layers(GRect bounds) {
   
 }
 
+static void prv_unobstructed_change(AnimationProgress progress, void *context) {
+  Layer *window_layer = window_get_root_layer(window);
+  GRect bounds = layer_get_unobstructed_bounds(window_layer);
+  int top = (bounds.size.h - 3 * 42)/2 - 8;
+
+  GRect minuteFrame  = layer_get_frame(text_layer_get_layer(minuteLayer));
+  minuteFrame.origin.y = top;
+  layer_set_frame(text_layer_get_layer(minuteLayer), minuteFrame);
+
+  GRect hourFrame = layer_get_frame(text_layer_get_layer(hourLayer));
+  hourFrame.origin.y = top + (42 * 2);
+  layer_set_frame(text_layer_get_layer(hourLayer), hourFrame);
+}
+
 static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
@@ -52,12 +66,18 @@ static void window_load(Window *window) {
   text_layer_enable_screen_text_flow_and_paging(minuteLayer, 0);
   layer_add_child(window_layer, text_layer_get_layer(hourLayer));
   text_layer_enable_screen_text_flow_and_paging(hourLayer, 2);
+
+  UnobstructedAreaHandlers handler = {
+    .change = prv_unobstructed_change
+  };
+  unobstructed_area_service_subscribe(handler, NULL);
 }
 
 static void window_unload(Window *window) {
   text_layer_destroy(minuteLayer);
   text_layer_destroy(hourLayer);
 }
+
 
 static void display_time(struct tm *time) {
 
