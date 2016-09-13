@@ -4,28 +4,56 @@ static Window *window;
 static TextLayer *minuteLayer; // The Minutes
 static TextLayer *hourLayer; // The hours
 
-static void init_text_layers(int linecount) {
+static void init_text_layers(int linecount, GRect bounds) {
   (void)linecount;
   int skippLines = 3 - linecount;
+  int paddingLeft = PBL_IF_ROUND_ELSE(0, 10);
+  int top = (bounds.size.h - 3 * 42)/2 - 10;
 
-  minuteLayer = text_layer_create((GRect) { .origin = {10, 10 - (skippLines * 21)}, .size = {144-10 /* width */, 168-14 /* height */}});
+  GRect minuteFrame = (GRect) {
+    .origin = {
+      paddingLeft,
+      top
+    },
+    .size = {
+      bounds.size.w - paddingLeft /* width */,
+      3 * 42  /* height */
+    }
+  };
+  minuteLayer = text_layer_create(minuteFrame);
   text_layer_set_text_color(minuteLayer, GColorWhite);
   text_layer_set_background_color(minuteLayer, GColorClear);
+  text_layer_set_text_alignment(minuteLayer, PBL_IF_ROUND_ELSE(GTextAlignmentCenter, GTextAlignmentLeft));
   GFont bitham = fonts_get_system_font(FONT_KEY_BITHAM_42_LIGHT);
   text_layer_set_font(minuteLayer, bitham);
 
-  hourLayer = text_layer_create((GRect) { .origin = {10, 94 - (skippLines * 21)}, .size = {144-10 /* width */, 168-14 /* height */}});
+  GRect hourFrame = (GRect) {
+    .origin = {
+      paddingLeft,
+      top + (2 * 42)
+    },
+    .size = {
+      bounds.size.w - paddingLeft /* width */,
+      42 + 10 /* height */
+    }
+  };
+  hourLayer = text_layer_create(hourFrame);
   text_layer_set_text_color(hourLayer, GColorWhite);
   text_layer_set_background_color(hourLayer, GColorClear);
+  text_layer_set_text_alignment(hourLayer, PBL_IF_ROUND_ELSE(GTextAlignmentCenter, GTextAlignmentLeft));
   GFont bithamBold = fonts_get_system_font(FONT_KEY_BITHAM_42_BOLD);
   text_layer_set_font(hourLayer, bithamBold);
+  
 }
 
 static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
-  init_text_layers(3);
+  GRect bounds = layer_get_bounds(window_layer);
+  init_text_layers(3, bounds);
   layer_add_child(window_layer, text_layer_get_layer(minuteLayer));
+  text_layer_enable_screen_text_flow_and_paging(minuteLayer, 0);
   layer_add_child(window_layer, text_layer_get_layer(hourLayer));
+  text_layer_enable_screen_text_flow_and_paging(hourLayer, 2);
 }
 
 static void window_unload(Window *window) {
