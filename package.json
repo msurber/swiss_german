@@ -1,0 +1,36 @@
+{
+    "name": "swiss_german",
+    "author": "Micha Surber",
+    "version": "1.1.0",
+    "dependencies": {},
+    "keywords": ["pebble-app"],
+    "pebble": {
+        "displayName": "Swiss German",
+        "uuid": "c777dc1b-0dff-4d40-9e37-145b5de1e2fd",
+        "sdkVersion": "3",
+        "enableMultiJS": false,
+        "projectType": "native",
+        "targetPlatforms": [
+            "aplite",
+            "basalt",
+            "chalk",
+            "diorite"
+        ],
+        "watchapp": {
+            "watchface": true
+        },
+        "messageKeys": {
+            "dummy": 0
+        },
+        "resources": {
+            "media": [
+                {
+                    "file": "images/menu_icon_swiss_german.png",
+                    "menuIcon": true,
+                    "name": "MenuIcon",
+                    "type": "png"
+                }
+            ]
+        }
+    }
+}
