@@ -4,9 +4,7 @@ static Window *window;
 static TextLayer *minuteLayer; // The Minutes
 static TextLayer *hourLayer; // The hours
 
-static void init_text_layers(int linecount, GRect bounds) {
-  (void)linecount;
-  int skippLines = 3 - linecount;
+static void init_text_layers(GRect bounds) {
   int paddingLeft = PBL_IF_ROUND_ELSE(0, 10);
   int top = (bounds.size.h - 3 * 42)/2 - 10;
 
@@ -49,7 +47,7 @@ static void init_text_layers(int linecount, GRect bounds) {
 static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
-  init_text_layers(3, bounds);
+  init_text_layers(bounds);
   layer_add_child(window_layer, text_layer_get_layer(minuteLayer));
   text_layer_enable_screen_text_flow_and_paging(minuteLayer, 0);
   layer_add_child(window_layer, text_layer_get_layer(hourLayer));
@@ -112,11 +110,6 @@ const char *hour_string[25] = { "zwölfi", "eis","zwei", "drü", "viäri", "föi
   if (54 < min && min < 60) {
   	 strcpy(minute_text , "\nföif vor");
   }
-/*
-  if (linecount > 4) {
-	  init_text_layers(linecount);
-  }
-*/
   
   static char staticTimeText[50] = ""; // Needs to be static because it's used by the system later.
   strcpy(staticTimeText , "");
