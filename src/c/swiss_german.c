@@ -60,7 +60,7 @@ static void prv_unobstructed_change(AnimationProgress progress, void *context) {
 
 static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
-  GRect bounds = layer_get_bounds(window_layer);
+  GRect bounds = layer_get_unobstructed_bounds(window_layer);
   init_text_layers(bounds);
   layer_add_child(window_layer, text_layer_get_layer(minuteLayer));
   text_layer_enable_screen_text_flow_and_paging(minuteLayer, 0);
